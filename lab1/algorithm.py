@@ -1,24 +1,72 @@
-from models import Algorithm  # Імпортуємо клас Algorithm з модуля models
+# Імпортуємо клас Algorithm з модуля models
+from typing import List, Optional, Any, Tuple
 
-def run_algorithm(filename):
-    tasks = []  # Створюємо порожній список для результатів
+from models import Algorithm
 
-    with open(filename, 'r') as file:  # Відкриваємо файл для читання
-        country_count = int(file.readline())  # Зчитуємо кількість країн з першого рядка файлу
 
-        while country_count:  # Виконуємо цикл, поки кількість країн не дорівнює 0
-            if not 1 <= country_count <= 20:  # Перевіряємо, чи кількість країн задовільняє обмеження
-                return None  # Повертаємо None, якщо кількість країн не в діапазоні [1, 20]
+def run_algorithm(filename: str) -> Optional[List[Tuple[str, int]]]:
 
-            lines = [file.readline() for _ in range(country_count)]  # Зчитуємо вхідні дані для кожної країни
+    # Створюємо порожній список для результатів
+    tasks: List[Tuple[str, int]] = []
 
-            algorithm = Algorithm(lines)  # Створюємо екземпляр Algorithm зі зчитаними даними
-            tasks.append(algorithm.run())  # Запускаємо алгоритм та зберігаємо результат у списку
+    # Відкриваємо файл для читання
+    with open(filename, 'r') as file:
+        # Зчитуємо кількість країн з першого рядка файлу
+        country_count: int = read_country_count(file)
 
-            next_line = file.readline().strip()  # Зчитуємо наступний рядок файлу та видаляємо зайві пробіли
-            if not next_line:  # Якщо рядок порожній, це означає закінчення файлу
-                break  # Виходимо з циклу
+        # Виконуємо цикл, поки кількість країн не дорівнює 0
+        while country_count:
 
-            country_count = int(next_line)  # Оновлюємо значення кількості країн
+            # Перевіряємо, чи кількість країн задовільняє обмеження
+            if not 1 <= country_count <= 20:
 
-    return tasks  # Повертаємо список результатів
+                # Повертаємо None, якщо кількість країн не в діапазоні [1, 20]
+                return None
+
+            # Зчитуємо вхідні дані для кожної країни
+            lines: List[str] = read_lines(file, country_count)
+
+            # Виконуємо алгоритм та отримуємо результат
+            result = run_algorithm_for_lines(lines)
+
+            # Зберігаємо результат у списку
+            tasks.append(result)
+
+            # Зчитуємо наступний рядок файлу та видаляємо зайві пробіли
+            next_line: str = file.readline().strip()
+
+            # Якщо рядок порожній, це означає закінчення файлу
+            if not next_line:
+
+                # Виходимо з циклу
+                break
+
+            # Оновлюємо значення кількості країн
+            country_count: int = int(next_line)
+
+    # Повертаємо список результатів
+    return tasks
+
+
+def read_country_count(file) -> int:
+    # Зчитуємо кількість країн з першого рядка файлу
+
+    return int(file.readline())
+
+
+def read_lines(file, count) -> List[str]:
+    # Зчитуємо вхідні дані для кожної країни
+
+    return [file.readline() for _ in range(count)]
+
+
+def run_algorithm_for_lines(lines) -> Optional[List[Tuple[str, int]]]:
+
+    # Створюємо екземпляр Algorithm зі зчитаними даними
+    algorithm: Algorithm = Algorithm(lines)
+
+    # Запускаємо алгоритм
+    return algorithm.run()
+
+    # Повертаємо список результатів
+    # return tasks
