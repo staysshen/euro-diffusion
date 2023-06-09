@@ -84,7 +84,10 @@ class Algorithm:
         result = {}  # Словник з результатами країн
         days = 0  # Лічильник днів
 
-        while True:
+        max_iterations = 1000  # Максимальна допустима кількість ітерацій
+        iteration_count = 0  # Лічильник ітерацій
+
+        while iteration_count < max_iterations:
             for country in self.countries:
                 for city in country.cities:
                     city.share_with_neighbors()  # Поділ монет з сусідніми містами
@@ -100,6 +103,11 @@ class Algorithm:
                     city.update()  # Оновлення стану міст
 
             days += 1  # Збільшуємо лічильник днів
+            iteration_count += 1
+
+        if iteration_count == max_iterations:
+            print("Увага: програма може зациклитися!")
+            
         return sorted(result.items(), key=lambda x: (x[1], x[0]))  # Сортування результатів за кількістю днів та назвою країни
 class City:
     def __init__(self, country_count, country_index):
