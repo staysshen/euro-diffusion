@@ -26,4 +26,4 @@ def main(input_file_path: str) -> None:
 if __name__ == '__main__':
     # Викликаємо головну функцію main, якщо файл виконується як самостійний скрипт
 
-    main('input_2.txt')
+    main('input.txt')

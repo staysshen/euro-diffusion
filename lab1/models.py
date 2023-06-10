@@ -231,7 +231,7 @@ class City:
         self.cache: List[int] = [0] * country_count
 
         # Початкова кількість монет для країни міста
-        self.coins[country_index] = self.get_initial_coin_count()
+        self.coins[country_index] = Algorithm.INITIAL_COIN_COUNT
 
     def share_with_neighbors(self) -> None:
 
@@ -240,8 +240,8 @@ class City:
             self.completed = True
 
         for index, coin_count in enumerate(self.coins):
-            if coin_count >= self.get_representative_portion():
-                share = coin_count // self.get_representative_portion()
+            if coin_count >= Algorithm.REPRESENTATIVE_PORTION:
+                share = coin_count // Algorithm.REPRESENTATIVE_PORTION
 
                 # Поділ монети з сусідніми містами
                 for city in self.neighbors:
@@ -254,18 +254,6 @@ class City:
         for i in range(self.country_count):
             self.coins[i] += self.cache[i]
             self.cache[i] = 0
-
-    @staticmethod
-    def get_initial_coin_count() -> int:
-        # Повертає початкову кількість монет для країни
-
-        return Algorithm.INITIAL_COIN_COUNT
-
-    @staticmethod
-    def get_representative_portion() -> int:
-        # Повертає розмір порції монети для поділу з сусідами
-
-        return Algorithm.REPRESENTATIVE_PORTION
 
 
 class Country:
